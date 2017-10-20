@@ -1,0 +1,168 @@
+﻿<Window x:Class="TreeCalc.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TreeCalc"
+        mc:Ignorable="d"
+        Title="Калькулятор"
+        Background="#1f1f1f"
+        FontSize="12"
+        Height="504" Width="896" Visibility="Visible" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF096AF5">
+    <Window.Resources>
+        <Style x:Key="NumBTN">
+            <Style.Setters>
+                <Setter Property="Control.Width" Value="106" />
+                <Setter Property="Control.Height" Value="37" />
+                <Setter Property="Control.Margin" Value="2" />
+                <Setter Property="Control.HorizontalAlignment" Value="Left" />
+                <Setter Property="Control.VerticalAlignment" Value="Top" />
+                <Setter Property="Control.Background" Value="#070707" />
+                <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+                <Setter Property="Control.VerticalContentAlignment" Value="Center" />
+                <Setter Property="Control.Foreground" Value="WhiteSmoke" />
+                <Setter Property="Control.FontSize" Value="23"/>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Foreground" Value="White"/>
+                    <Setter Property="Control.Background" Value="#264558"/>
+                </Trigger>
+                <EventTrigger RoutedEvent = "Control.MouseDown">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimationUsingKeyFrames 
+                                    Storyboard.TargetProperty ="(Border.Background).(SolidColorBrush.Color)">
+                                    <LinearColorKeyFrame KeyTime="0" Value="#393dFF"/>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+                <EventTrigger RoutedEvent = "Control.MouseUp">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimationUsingKeyFrames 
+                                    Storyboard.TargetProperty ="(Border.Background).(SolidColorBrush.Color)">
+                                    <LinearColorKeyFrame KeyTime="0" Value="#264558"/>
+                                </ColorAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="opBTN" BasedOn="{StaticResource NumBTN}">
+            <Setter Property="Control.Background" Value="#141414"/>
+            <Setter Property="Control.Foreground" Value="WhiteSmoke"/>
+            <Setter Property="Control.FontSize" Value="16" />
+        </Style>
+
+        <Style x:Key="topBTN" BasedOn="{StaticResource NumBTN}">
+            <Setter Property="Control.Background" Value="#050b0b"/>
+            <Setter Property="Control.Foreground" Value="#90afb5"/>
+        </Style>
+
+        <Style x:Key="headBTN">
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Foreground" Value="White"/>
+                    <Setter Property="Control.Background" Value="#264558"/>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Setters>
+                <Setter Property="Control.Foreground" Value="WhiteSmoke"/>
+                <Setter Property="Control.FontSize" Value="16"/>
+                <Setter Property="Control.Padding" Value="8 2 8 2"/>
+                <Setter Property="Control.Margin" Value="0"/>
+            </Style.Setters>
+        </Style>
+
+        <Style x:Key="closeBTN" BasedOn="{StaticResource headBTN}">
+            <Style.Triggers>
+                <Trigger Property="Control.IsMouseOver" Value="True">
+                    <Setter Property="Control.Foreground" Value="White"/>
+                    <Setter Property="Control.Background" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border BorderBrush="#2a89d7" BorderThickness="1" CornerRadius="0" >
+        <Grid>
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <!--Верхняя панель-->
+                <DockPanel Height="32" Background="#1f1f1f" >
+                    <DockPanel DockPanel.Dock="Right">
+                        <Label Content="_" Style="{StaticResource headBTN}" MouseUp="Label_MouseUp_1"/>
+                        <Label Content="✕" Style="{StaticResource closeBTN}" MouseUp="Label_MouseUp" />
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Right" MouseDown="DockPanel_MouseDown">
+                        <Label Content="Калькулятор" Foreground="WhiteSmoke" />
+                    </DockPanel>
+                </DockPanel>
+                <!--Остальная панель-->
+                <DockPanel>
+                    <DockPanel VerticalAlignment="Stretch">
+                        <StackPanel Width="554" HorizontalAlignment="Left" >
+                            <!--Расчётная панель-->
+                            <StackPanel Height="128">
+                                <DockPanel Height="45" >
+                                    <Label Content="≣ Инженерный" Foreground="WhiteSmoke" FontSize="22"></Label>
+                                </DockPanel>
+                                <Label x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalContentAlignment="Right" Content=""/>
+                                <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
+                            </StackPanel>
+
+                            <DockPanel Height="54" >
+
+                            </DockPanel>
+                            <WrapPanel VerticalAlignment="Stretch" Height="293" Loaded="wPanel_Loaded">
+                                <Label Style="{StaticResource opBTN}" Content="asin" DataContext="asin("/>
+                                <Label Style="{StaticResource opBTN}" Content="acos" DataContext="acos("/>
+                                <Label Style="{StaticResource opBTN}" Content="atan" DataContext="atan("/>
+                                <Label Style="{StaticResource opBTN}" Content="log"  DataContext="log("/>
+                                <Label Style="{StaticResource opBTN}" Content="x^y" DataContext="^"/>
+                                <Label Style="{StaticResource opBTN}" Content="sin" DataContext="sin("/>
+                                <Label Style="{StaticResource opBTN}" Content="cos" DataContext="cos("/>
+                                <Label Style="{StaticResource opBTN}" Content="tan" DataContext="tan("/>
+                                <Label Style="{StaticResource opBTN}" Content="Exp" DataContext="exp("/>
+                                <Label Style="{StaticResource opBTN}" Content="Ln" DataContext="ln("/>
+                                <Label Style="{StaticResource opBTN}" Content="√" DataContext="sqrt("/>
+                                <Label Style="{StaticResource opBTN}" Content="..." DataContext="asin("/>
+                                <Label Style="{StaticResource opBTN}" Content="..." DataContext="asin("/>
+                                <Label Style="{StaticResource opBTN}" Content="С" MouseUp="backspace_MouseUp" />
+                                <Label Style="{StaticResource opBTN}" Content="÷" DataContext="/"/>
+                                <Label Style="{StaticResource opBTN}" Content="π" DataContext="3.14"/>
+                                <Label Style="{StaticResource NumBTN}" Content="7" DataContext="7"/>
+                                <Label Style="{StaticResource NumBTN}" Content="8" DataContext="8"/>
+                                <Label Style="{StaticResource NumBTN}" Content="9" DataContext="9"/>
+                                <Label Style="{StaticResource opBTN}"  Content="✕" DataContext="*"/>
+                                <Label Style="{StaticResource opBTN}"  Content="n!" DataContext="!"/>
+                                <Label Style="{StaticResource NumBTN}" Content="4" DataContext="4"/>
+                                <Label Style="{StaticResource NumBTN}" Content="5" DataContext="5" />
+                                <Label Style="{StaticResource NumBTN}" Content="6" DataContext="6"/>
+                                <Label Style="{StaticResource opBTN}" Content="—" DataContext="-"/>
+                                <Label Style="{StaticResource opBTN}" Content="±" />
+                                <Label Style="{StaticResource NumBTN}" Content="1" DataContext="1"/>
+                                <Label Style="{StaticResource NumBTN}" Content="2" DataContext="2"/>
+                                <Label Style="{StaticResource NumBTN}" Content="3" DataContext="3"/>
+                                <Label Style="{StaticResource opBTN}" Content="+" DataContext="+"/>
+                                <Label Style="{StaticResource opBTN}" Content="(" DataContext="("/>
+                                <Label Style="{StaticResource opBTN}" Content=")" DataContext=")"/>
+                                <Label Style="{StaticResource NumBTN}" Content="0" DataContext="0" />
+                                <Label Style="{StaticResource NumBTN}" Content="," DataContext="."/>
+                                <Label Style="{StaticResource opBTN}" Content="=" MouseUp="Label_MouseUp_2"/>
+                            </WrapPanel>
+
+                        </StackPanel>
+                        <StackPanel  HorizontalAlignment="Stretch" >
+                        </StackPanel>
+                    </DockPanel>
+                </DockPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
