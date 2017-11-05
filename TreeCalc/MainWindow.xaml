@@ -139,8 +139,8 @@
                                 <Label Style="{StaticResource opBTN}" Content="Exp" DataContext="exp("/>
                                 <Label Style="{StaticResource opBTN}" Content="Ln" DataContext="ln("/>
                                 <Label Style="{StaticResource opBTN}" Content="√" DataContext="sqrt("/>
-                                <Label Style="{StaticResource opBTN}" Content="..." DataContext="asin("/>
-                                <Label Style="{StaticResource opBTN}" Content="..." DataContext="asin("/>
+                                <Label Style="{StaticResource opBTN}" Content="∛" DataContext="cbrt("/>
+                                <Label Style="{StaticResource opBTN}" Content="CLR" DataContext="asin("/>
                                 <Label Style="{StaticResource opBTN}" Content="С" MouseUp="backspace_MouseUp" />
                                 <Label Style="{StaticResource opBTN}" Content="÷" DataContext="/"/>
                                 <Label Style="{StaticResource opBTN}" Content="π" DataContext="3.14"/>

@@ -65,7 +65,8 @@ namespace TreeCalc
                     }
                 }
             }
-            onActivation.Invoke();
+            if(onActivation != null)
+                onActivation.Invoke();
         }
     }
 }

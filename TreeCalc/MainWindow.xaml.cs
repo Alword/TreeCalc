@@ -20,7 +20,7 @@ namespace TreeCalc
     /// </summary>
     public partial class MainWindow : Window
     {
-        //string calcData;
+        //string calcData.Content;
         public MainWindow()
         {
             void warmingUp()
@@ -35,17 +35,6 @@ namespace TreeCalc
 
             meoryBTN.SetHead = "Память";
             meoryBTN.IsActivated = false;
-
-        }
-
-        private void AddOperation(string operation)
-        {
-            calcData.Content += operation;
-        }
-
-        private void ChangeZnak(Label x)
-        {
-            //x.Content = ;
         }
 
         /// <summary>
@@ -82,6 +71,11 @@ namespace TreeCalc
         {
             if (sender is Label)
                 AddOperation((sender as Label).DataContext.ToString());
+
+            void AddOperation(string operation)
+            {
+                calcData.Content += operation;
+            }
         }
 
         private void wPanel_Loaded(object sender, RoutedEventArgs e)
@@ -103,14 +97,14 @@ namespace TreeCalc
             if (sender is Label)
             {
                 var hwdl = calcData;
-                hwdl.Content = Model.backspace(hwdl.Content.ToString());
+                hwdl.Content = Model.Backspace(hwdl.Content.ToString());
             }
         }
     }
 
     public static class Model
     {
-        public static string backspace(string calcData)
+        public static string Backspace(string calcData)
         {
             if (calcData.Length > 0)
             {
@@ -122,6 +116,11 @@ namespace TreeCalc
                 }
 
             }
+            return calcData;
+        }
+
+        private static string ChangeZnak(string calcData)
+        {
             return calcData;
         }
     }
