@@ -9,8 +9,8 @@ namespace TreeCalc
 {
     public class Operation
     {
-        [DllImport(@"etree.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern double Calculate(string inputExpression);
+        [DllImport(@"ExpressionCalculator.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern double Calculate(string inputExpression, bool angularMeasure);
 
         public enum Operations
         {
@@ -32,9 +32,14 @@ namespace TreeCalc
             factorial,
         }
 
-        public static string tryCalc(string x)
+        /// <summary>
+        /// Посчитать выражение
+        /// </summary>
+        /// <param name="x">Выражение</param>
+        /// <returns>Результат выражения</returns>
+        public static string tryCalc(string x,bool isRad = false)
         {
-            string res = Calculate(x).ToString();
+            string res = Calculate(x,isRad).ToString();
             return res;
         }
     }

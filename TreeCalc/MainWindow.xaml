@@ -62,8 +62,11 @@
         </Style>
 
         <Style x:Key="topBTN" BasedOn="{StaticResource NumBTN}">
-            <Setter Property="Control.Background" Value="#050b0b"/>
-            <Setter Property="Control.Foreground" Value="#90afb5"/>
+            <Setter Property="Control.Width" Value="76" />
+            <Setter Property="Control.Height" Value="31" />
+            <Setter Property="Control.Background" Value="Transparent"/>
+            <Setter Property="Control.Foreground" Value="White"/>
+            <Setter Property="Control.FontSize" Value="14"/>
         </Style>
 
         <Style x:Key="headBTN">
@@ -96,8 +99,8 @@
                 <!--Верхняя панель-->
                 <DockPanel Height="32" Background="#1f1f1f" >
                     <DockPanel DockPanel.Dock="Right">
-                        <Label Content="_" Style="{StaticResource headBTN}" MouseUp="Label_MouseUp_1"/>
-                        <Label Content="✕" Style="{StaticResource closeBTN}" MouseUp="Label_MouseUp" />
+                        <Label Content="_" Style="{StaticResource headBTN}" MouseUp="Hide_MouseUp"/>
+                        <Label Content="✕" Style="{StaticResource closeBTN}" MouseUp="Close_MouseUp" />
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Right" MouseDown="DockPanel_MouseDown">
                         <Label Content="Калькулятор" Foreground="WhiteSmoke" />
@@ -116,8 +119,13 @@
                                 <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
                             </StackPanel>
 
-                            <DockPanel Height="54" >
-
+                            <DockPanel Height="54">
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="DEG"/>
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MC"/>
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MR"/>
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M-"/>
+                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MS"/>
                             </DockPanel>
                             <WrapPanel VerticalAlignment="Stretch" Height="293" Loaded="wPanel_Loaded">
                                 <Label Style="{StaticResource opBTN}" Content="asin" DataContext="asin("/>
@@ -140,7 +148,7 @@
                                 <Label Style="{StaticResource NumBTN}" Content="8" DataContext="8"/>
                                 <Label Style="{StaticResource NumBTN}" Content="9" DataContext="9"/>
                                 <Label Style="{StaticResource opBTN}"  Content="✕" DataContext="*"/>
-                                <Label Style="{StaticResource opBTN}"  Content="n!" DataContext="!"/>
+                                <Label Style="{StaticResource opBTN}"  Content="n!" DataContext="fact("/>
                                 <Label Style="{StaticResource NumBTN}" Content="4" DataContext="4"/>
                                 <Label Style="{StaticResource NumBTN}" Content="5" DataContext="5" />
                                 <Label Style="{StaticResource NumBTN}" Content="6" DataContext="6"/>
@@ -159,6 +167,10 @@
 
                         </StackPanel>
                         <StackPanel  HorizontalAlignment="Stretch" >
+                            <DockPanel>
+                                <local:JurnalBtn x:Name="jurnalBTN" />
+                                <local:JurnalBtn x:Name="meoryBTN"/>
+                            </DockPanel>
                         </StackPanel>
                     </DockPanel>
                 </DockPanel>

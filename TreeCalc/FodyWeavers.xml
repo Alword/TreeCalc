@@ -2,7 +2,7 @@
 <Weavers>
   <Costura>
     <Unmanaged32Assemblies>
-      etree
+      ExpressionCalculator
     </Unmanaged32Assemblies>
   </Costura>
 </Weavers>

@@ -23,20 +23,57 @@ namespace TreeCalc
         //string calcData;
         public MainWindow()
         {
+            void warmingUp()
+            {
+                Operation.tryCalc("0");
+            }
+            new System.Threading.Thread(warmingUp).Start();
             InitializeComponent();
+
+            jurnalBTN.SetHead = "Журнал";
+            jurnalBTN.IsActivated = true;
+
+            meoryBTN.SetHead = "Память";
+            meoryBTN.IsActivated = false;
+
         }
 
+        private void AddOperation(string operation)
+        {
+            calcData.Content += operation;
+        }
+
+        private void ChangeZnak(Label x)
+        {
+            //x.Content = ;
+        }
+
+        /// <summary>
+        /// Перемещение панели мышкой
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DockPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
         }
 
-        private void Label_MouseUp_1(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Cвернуть окно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Hide_MouseUp(object sender, MouseButtonEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
-        private void Label_MouseUp(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Закрыть окно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close_MouseUp(object sender, MouseButtonEventArgs e)
         {
             Application.Current.Shutdown();
         }
@@ -47,11 +84,6 @@ namespace TreeCalc
                 AddOperation((sender as Label).DataContext.ToString());
         }
 
-        private void AddOperation(string operation)
-        {
-            calcData.Content += operation;
-        }
-
         private void wPanel_Loaded(object sender, RoutedEventArgs e)
         {
             foreach (Label x in (sender as WrapPanel).Children)
@@ -59,16 +91,6 @@ namespace TreeCalc
                 if (x.DataContext != null)
                     x.MouseUp += opBtn_Click;
             }
-            void warmingUp()
-            {
-                Operation.tryCalc("0");
-            }
-            new System.Threading.Thread(warmingUp).Start();
-        }
-
-        private void ChangeZnak(Label x)
-        {
-            //x.Content = ;
         }
 
         private void Label_MouseUp_2(object sender, MouseButtonEventArgs e)
@@ -90,10 +112,15 @@ namespace TreeCalc
     {
         public static string backspace(string calcData)
         {
-            var strLen = calcData.Length;
-            if (strLen > 0)
+            if (calcData.Length > 0)
             {
-                calcData = calcData.ToString().Substring(0, strLen - 1);
+                calcData = calcData.ToString().Substring(0, calcData.Length - 1);
+
+                while (calcData.Length > 0 && !Char.IsDigit(calcData[calcData.Length - 1]) && Char.IsLetter(calcData[calcData.Length - 1]))
+                {
+                    calcData = calcData.ToString().Substring(0, calcData.Length - 1);
+                }
+
             }
             return calcData;
         }
