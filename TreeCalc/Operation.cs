@@ -10,7 +10,7 @@ namespace TreeCalc
     public class Operation
     {
         [DllImport(@"ExpressionCalculator.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern double Calculate(string inputExpression, bool angularMeasure);
+        static extern double Calculate(string inputExpression);
 
         public enum Operations
         {
@@ -37,9 +37,9 @@ namespace TreeCalc
         /// </summary>
         /// <param name="x">Выражение</param>
         /// <returns>Результат выражения</returns>
-        public static string TryCalc(string x,bool isRad = false)
+        public static string TryCalc(string x)
         {
-            string res = Calculate(x,isRad).ToString();
+            string res = Calculate(x).ToString();
             return res;
         }
     }

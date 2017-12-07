@@ -124,7 +124,6 @@
                         </StackPanel>
 
                         <DockPanel Height="41">
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="DEG"/>
                             <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MC"/>
                             <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MR"/>
                             <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
