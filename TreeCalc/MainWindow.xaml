@@ -12,8 +12,9 @@
     <Window.Resources>
         <Style x:Key="NumBTN">
             <Style.Setters>
-                <Setter Property="Control.Width" Value="106" />
-                <Setter Property="Control.Height" Value="37" />
+                <EventSetter Event="Control.MouseUp" Handler="OpBtn_Click"></EventSetter>
+                <Setter Property="Control.Width" Value="108" />
+                <Setter Property="Control.Height" Value="38" />
                 <Setter Property="Control.Margin" Value="2" />
                 <Setter Property="Control.HorizontalAlignment" Value="Left" />
                 <Setter Property="Control.VerticalAlignment" Value="Top" />
@@ -94,87 +95,174 @@
         </Style>
     </Window.Resources>
     <Border BorderBrush="#2a89d7" BorderThickness="1" CornerRadius="0" >
-        <Grid>
-            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <!--Верхняя панель-->
-                <DockPanel Height="32" Background="#1f1f1f" >
-                    <DockPanel DockPanel.Dock="Right">
-                        <Label Content="_" Style="{StaticResource headBTN}" MouseUp="Hide_MouseUp"/>
-                        <Label Content="✕" Style="{StaticResource closeBTN}" MouseUp="Close_MouseUp" />
-                    </DockPanel>
-                    <DockPanel DockPanel.Dock="Right" MouseDown="DockPanel_MouseDown">
-                        <Label Content="Калькулятор" Foreground="WhiteSmoke" />
-                    </DockPanel>
+        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <!--Верхняя панель-->
+            <DockPanel Height="32" Background="#1f1f1f" >
+                <DockPanel DockPanel.Dock="Right">
+                    <Label Content="_" Style="{StaticResource headBTN}" MouseUp="Hide_MouseUp"/>
+                    <Label Content="✕" Style="{StaticResource closeBTN}" MouseUp="Close_MouseUp" />
                 </DockPanel>
-                <!--Остальная панель-->
-                <DockPanel>
-                    <DockPanel VerticalAlignment="Stretch">
-                        <StackPanel Width="554" HorizontalAlignment="Left" >
-                            <!--Расчётная панель-->
-                            <StackPanel Height="128">
-                                <DockPanel Height="45" >
-                                    <Label Content="≣ Инженерный" Foreground="WhiteSmoke" FontSize="22"></Label>
-                                </DockPanel>
-                                <Label x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalContentAlignment="Right" Content=""/>
-                                <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
-                            </StackPanel>
-
-                            <DockPanel Height="54">
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="DEG"/>
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MC"/>
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MR"/>
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M-"/>
-                                <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MS"/>
-                            </DockPanel>
-                            <WrapPanel VerticalAlignment="Stretch" Height="293" Loaded="wPanel_Loaded">
-                                <Label Style="{StaticResource opBTN}" Content="asin" DataContext="asin("/>
-                                <Label Style="{StaticResource opBTN}" Content="acos" DataContext="acos("/>
-                                <Label Style="{StaticResource opBTN}" Content="atan" DataContext="atan("/>
-                                <Label Style="{StaticResource opBTN}" Content="log"  DataContext="log("/>
-                                <Label Style="{StaticResource opBTN}" Content="x^y" DataContext="^"/>
-                                <Label Style="{StaticResource opBTN}" Content="sin" DataContext="sin("/>
-                                <Label Style="{StaticResource opBTN}" Content="cos" DataContext="cos("/>
-                                <Label Style="{StaticResource opBTN}" Content="tan" DataContext="tan("/>
-                                <Label Style="{StaticResource opBTN}" Content="Exp" DataContext="exp("/>
-                                <Label Style="{StaticResource opBTN}" Content="Ln" DataContext="ln("/>
-                                <Label Style="{StaticResource opBTN}" Content="√" DataContext="sqrt("/>
-                                <Label Style="{StaticResource opBTN}" Content="∛" DataContext="cbrt("/>
-                                <Label Style="{StaticResource opBTN}" Content="CLR" DataContext="asin("/>
-                                <Label Style="{StaticResource opBTN}" Content="С" MouseUp="backspace_MouseUp" />
-                                <Label Style="{StaticResource opBTN}" Content="÷" DataContext="/"/>
-                                <Label Style="{StaticResource opBTN}" Content="π" DataContext="3.14"/>
-                                <Label Style="{StaticResource NumBTN}" Content="7" DataContext="7"/>
-                                <Label Style="{StaticResource NumBTN}" Content="8" DataContext="8"/>
-                                <Label Style="{StaticResource NumBTN}" Content="9" DataContext="9"/>
-                                <Label Style="{StaticResource opBTN}"  Content="✕" DataContext="*"/>
-                                <Label Style="{StaticResource opBTN}"  Content="n!" DataContext="fact("/>
-                                <Label Style="{StaticResource NumBTN}" Content="4" DataContext="4"/>
-                                <Label Style="{StaticResource NumBTN}" Content="5" DataContext="5" />
-                                <Label Style="{StaticResource NumBTN}" Content="6" DataContext="6"/>
-                                <Label Style="{StaticResource opBTN}" Content="—" DataContext="-"/>
-                                <Label Style="{StaticResource opBTN}" Content="±" />
-                                <Label Style="{StaticResource NumBTN}" Content="1" DataContext="1"/>
-                                <Label Style="{StaticResource NumBTN}" Content="2" DataContext="2"/>
-                                <Label Style="{StaticResource NumBTN}" Content="3" DataContext="3"/>
-                                <Label Style="{StaticResource opBTN}" Content="+" DataContext="+"/>
-                                <Label Style="{StaticResource opBTN}" Content="(" DataContext="("/>
-                                <Label Style="{StaticResource opBTN}" Content=")" DataContext=")"/>
-                                <Label Style="{StaticResource NumBTN}" Content="0" DataContext="0" />
-                                <Label Style="{StaticResource NumBTN}" Content="," DataContext="."/>
-                                <Label Style="{StaticResource opBTN}" Content="=" MouseUp="Label_MouseUp_2"/>
-                            </WrapPanel>
-
-                        </StackPanel>
-                        <StackPanel  HorizontalAlignment="Stretch" >
-                            <DockPanel>
-                                <local:JurnalBtn x:Name="jurnalBTN" />
-                                <local:JurnalBtn x:Name="meoryBTN"/>
-                            </DockPanel>
-                        </StackPanel>
-                    </DockPanel>
+                <DockPanel DockPanel.Dock="Right" MouseDown="DockPanel_MouseDown">
+                    <Label Content="Калькулятор" Foreground="WhiteSmoke" />
                 </DockPanel>
-            </StackPanel>
-        </Grid>
+            </DockPanel>
+            <!--Остальная панель-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition MaxWidth="300px"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" VerticalAlignment="Stretch">
+                    <StackPanel Width="554" HorizontalAlignment="Left" >
+                        <!--Расчётная панель-->
+                        <StackPanel Height="128">
+                            <DockPanel Height="45" >
+                                <Label Content="≣ Инженерный" Foreground="WhiteSmoke" FontSize="22"></Label>
+                            </DockPanel>
+                            <Label x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalContentAlignment="Right" Content=""/>
+                            <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
+                        </StackPanel>
+
+                        <DockPanel Height="41">
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="DEG"/>
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MC"/>
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MR"/>
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M-"/>
+                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MS"/>
+                        </DockPanel>
+                        <Grid Margin="4" x:Name="GridField" VerticalAlignment="Stretch" Height="293">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}"
+                                   Content="sin" DataContext="sin("/>
+                            <Label Grid.Row="0" Grid.Column="1" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="cos" DataContext="cos("/>
+                            <Label Grid.Row="0" Grid.Column="2" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="tan" DataContext="tan("/>
+                            <Label Grid.Row="0" Grid.Column="3"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="Exp" DataContext="exp("/>
+                            <Label Grid.Row="0" Grid.Column="4"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="↑" MouseUp="ShiftMouseUp"/>
+                            <Label Grid.Row="1" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="asin" DataContext="asin("/>
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="acos" DataContext="acos("/>
+                            <Label Grid.Row="1" Grid.Column="2" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="atan" DataContext="atan("/>
+                            <Label Grid.Row="1" Grid.Column="4" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="log"  DataContext="log("/>
+                            <Label Grid.Row="1" Grid.Column="3" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="Ln" DataContext="ln("/>
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="∛" DataContext="cbrt("/>
+                            <Label Grid.Row="2" Grid.Column="1" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="x^y" DataContext="^"/>
+                            <Label Grid.Row="2" Grid.Column="2" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="CLR" MouseUp="Label_MouseUp"/>
+                            <Label Grid.Row="2" Grid.Column="3" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="С" MouseUp="Backspace_MouseUp" />
+                            <Label Grid.Row="2" Grid.Column="4" 
+                                   Style="{StaticResource opBTN}" Content="÷" DataContext="/"/>
+                            <Label Grid.Row="3" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="√" DataContext="sqrt("/>
+                            <Label Grid.Row="3" Grid.Column="1" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="7" DataContext="7"/>
+                            <Label Grid.Row="3" Grid.Column="2" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="8" DataContext="8"/>
+                            <Label Grid.Row="3" Grid.Column="3" 
+                                   Style="{StaticResource NumBTN}"
+                                   Content="9" DataContext="9"/>
+                            <Label Grid.Row="3" Grid.Column="4"
+                                   Style="{StaticResource opBTN}"
+                                   Content="—" DataContext="-"/>
+                            <Label Grid.Row="4" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="π" DataContext="3.14"/>
+                            <Label Grid.Row="4" Grid.Column="1" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="4" DataContext="4"/>
+                            <Label Grid.Row="4" Grid.Column="2" 
+                                   Style="{StaticResource NumBTN}"
+                                   Content="5" DataContext="5" />
+                            <Label Grid.Row="4" Grid.Column="3"
+                                   Style="{StaticResource NumBTN}"
+                                   Content="6" DataContext="6"/>
+                            <Label Grid.Row="4" Grid.Column="4" 
+                                   Style="{StaticResource opBTN}"  
+                                   Content="✕" DataContext="*"/>
+                            <Label Grid.Row="5" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}"  
+                                   Content="n!" DataContext="fact("/>
+                            <Label Grid.Row="5" Grid.Column="1" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="1" DataContext="1"/>
+                            <Label Grid.Row="5" Grid.Column="2" 
+                                   Style="{StaticResource NumBTN}" Content="2" DataContext="2"/>
+                            <Label Grid.Row="5" Grid.Column="3" 
+                                   Style="{StaticResource NumBTN}" Content="3" DataContext="3"/>
+                            <Label Grid.Row="5" Grid.Column="4"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="+" DataContext="+"/>
+                            <Label Grid.Row="6" Grid.Column="0" 
+                                   Style="{StaticResource opBTN}" 
+                                   Content="( )"
+                                   MouseUp="Breaketing_MouseUp"/>
+                            <Label Grid.Row="6" Grid.Column="1"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="±" />
+                            <Label Grid.Row="6" Grid.Column="2" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="0" DataContext="0" />
+                            <Label Grid.Row="6" Grid.Column="3" 
+                                   Style="{StaticResource NumBTN}" 
+                                   Content="," DataContext="."/>
+                            <Label Grid.Row="6" Grid.Column="4"
+                                   Style="{StaticResource opBTN}" 
+                                   Content="=" MouseUp="EqualsMouseUp"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <StackPanel  HorizontalAlignment="Stretch" >
+                        <DockPanel>
+                            <local:JurnalBtn x:Name="jurnalBTN" />
+                            <local:JurnalBtn x:Name="meoryBTN"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </StackPanel>
     </Border>
 </Window>

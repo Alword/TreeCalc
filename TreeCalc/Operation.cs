@@ -37,7 +37,7 @@ namespace TreeCalc
         /// </summary>
         /// <param name="x">Выражение</param>
         /// <returns>Результат выражения</returns>
-        public static string tryCalc(string x,bool isRad = false)
+        public static string TryCalc(string x,bool isRad = false)
         {
             string res = Calculate(x,isRad).ToString();
             return res;

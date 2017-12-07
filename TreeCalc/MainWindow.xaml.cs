@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,7 @@ namespace TreeCalc
         {
             void warmingUp()
             {
-                Operation.tryCalc("0");
+                Operation.TryCalc("0");
             }
             new System.Threading.Thread(warmingUp).Start();
             InitializeComponent();
@@ -67,32 +68,81 @@ namespace TreeCalc
             Application.Current.Shutdown();
         }
 
-        private void opBtn_Click(object sender, MouseButtonEventArgs e)
+        private void OpBtn_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is Label)
-                AddOperation((sender as Label).DataContext.ToString());
+            {
+                var hwnd = sender as Label;
+                bool itPossible = false;
+
+                if (hwnd.DataContext != null)
+                {
+                    string source = calcData.Content.ToString();
+                    char context = hwnd.DataContext.ToString()[0];
+
+                    if (source.Length == 0)
+                    {
+                        if ((context == '-' || char.IsLetterOrDigit(context)))
+                        {
+                            itPossible = true;
+                        }
+                    }
+                    else
+                    {
+                        char last = source[source.Length - 1];
+
+                        //Если последний - ( => {-} или {a} или {num}
+                        //Если последний - {*x+-/} => {a} или num
+                        //Если последний - {num} => ({num} или {*x+-/}) не буква
+                        if (char.IsNumber(last) && !char.IsLetter(context))
+                        {
+                            itPossible = true;
+                        }
+                        else if (!char.IsLetterOrDigit(last))
+                        {
+                            if (last == '(' && (context == '-' || char.IsLetterOrDigit(context)))
+                            {
+                                itPossible = true;
+                            }
+                            else
+                            if (last == ')' && (!char.IsLetterOrDigit(context)))
+                            {
+                                itPossible = true;
+                            }
+                            else
+                            if (last != ')' && last != '(' && char.IsLetterOrDigit(context))
+                            {
+                                itPossible = true;
+                            }
+                        }
+                        else if (char.IsDigit(last) && !char.IsLetter(context))
+                        {
+                            itPossible = true;
+                        }
+
+                    }
+                    if (itPossible)
+                        AddOperation(hwnd.DataContext.ToString());
+
+                }//(hwnd.DataContext != null)
+            }//(sender is Label)
 
             void AddOperation(string operation)
             {
                 calcData.Content += operation;
             }
-        }
+        }//OpBtn_Click(
 
-        private void wPanel_Loaded(object sender, RoutedEventArgs e)
+        private void EqualsMouseUp(object sender, MouseButtonEventArgs e)
         {
-            foreach (Label x in (sender as WrapPanel).Children)
+            string source = calcData.Content.ToString();
+            if (Model.BraketsDiff(source) == 0)
             {
-                if (x.DataContext != null)
-                    x.MouseUp += opBtn_Click;
+                resultData.Content = Model.Equals(source);
             }
         }
 
-        private void Label_MouseUp_2(object sender, MouseButtonEventArgs e)
-        {
-            resultData.Content = Operation.tryCalc(calcData.Content.ToString());
-        }
-
-        private void backspace_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Backspace_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (sender is Label)
             {
@@ -100,10 +150,108 @@ namespace TreeCalc
                 hwdl.Content = Model.Backspace(hwdl.Content.ToString());
             }
         }
+
+        private void ShiftMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var hwnd = (sender as Label);
+            List<string> shiftContent = Model.shiftContent;
+            List<string> shiftContext = Model.shiftContext;
+
+
+            int i = 0;
+            int j = 0;
+            if ((string)hwnd.Content == "↓")
+            {
+                shiftContent = Model.beforContent;
+                shiftContext = Model.beforContext;
+                hwnd.Content = "↑";
+            }
+            else
+            {
+                hwnd.Content = "↓";
+            }
+            do
+            {
+                (GridField.Children[i] as Label).Content = shiftContent[i];
+                (GridField.Children[i] as Label).DataContext = shiftContext[i];
+                i++;
+            } while (i < 3);
+
+            i = 5;
+            do
+            {
+                (GridField.Children[i] as Label).Content = shiftContent[j];
+                (GridField.Children[i] as Label).DataContext = shiftContext[j];
+                j++;
+                i++;
+            } while (j < 3);
+        }
+
+        private void Breaketing_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            string source = (string)calcData.Content.ToString();
+
+            int dif = Model.BraketsDiff(source);
+
+            if (source.Length > 0 && (char.IsNumber(source[source.Length - 1]) || source[source.Length - 1] == ')'))
+            {
+                if (dif > 0)
+                {
+                    calcData.Content += ")";
+                }
+            }
+            else
+            {
+                calcData.Content += "(";
+            }
+        }
+
+        private void Label_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            calcData.Content = "";
+        }
     }
 
     public static class Model
     {
+        public static List<string> shiftContent = new List<string>()
+        {
+                "Sinh",
+                "Cosh",
+                "Tanh",
+                "Asinh",
+                "Acosh",
+                "Atanh"
+        };
+        public static List<string> shiftContext = new List<string>()
+            {
+                "sinh(",
+                "cosh(",
+                "tanh(",
+                "asinh(",
+                "acosh(",
+                "atanh("
+            };
+        public static List<string> beforContent = new List<string>()
+            {
+                "sin",
+                "cos",
+                "tan",
+                "asin",
+                "acos",
+                "atan"
+            };
+        public static List<string> beforContext = new List<string>()
+            {
+                "sin(",
+                "cos(",
+                "tan(",
+                "asin(",
+                "acos(",
+                "atan("
+            };
+
+
         public static string Backspace(string calcData)
         {
             if (calcData.Length > 0)
@@ -119,9 +267,19 @@ namespace TreeCalc
             return calcData;
         }
 
+        public static string Equals(string data)
+        {
+            return Operation.TryCalc(data);
+        }
+
         private static string ChangeZnak(string calcData)
         {
             return calcData;
+        }
+
+        public static int BraketsDiff(string source)
+        {
+            return new Regex(@"\(").Matches(source).Count - new Regex(@"\)").Matches(source).Count;
         }
     }
 }
