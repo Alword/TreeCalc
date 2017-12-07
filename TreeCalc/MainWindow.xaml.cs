@@ -177,14 +177,14 @@ namespace TreeCalc
                 i++;
             } while (i < 3);
 
-            i = 5;
+            i = 5; j = 3;
             do
             {
                 (GridField.Children[i] as Label).Content = shiftContent[j];
                 (GridField.Children[i] as Label).DataContext = shiftContext[j];
                 j++;
                 i++;
-            } while (j < 3);
+            } while (j < 6);
         }
 
         private void Breaketing_MouseUp(object sender, MouseButtonEventArgs e)
