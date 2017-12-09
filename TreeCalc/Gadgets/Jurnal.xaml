@@ -31,20 +31,19 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="5">
-                            <TextBlock TextWrapping="Wrap" Foreground="WhiteSmoke" FontSize="16" Text="Выражение:" HorizontalAlignment="Right"></TextBlock>
                             <TextBlock TextWrapping="Wrap" Foreground="WhiteSmoke" FontSize="16" Text="{Binding Path=Expression}" HorizontalAlignment="Right"/>
                             <DockPanel>
-                                <TextBlock TextWrapping="Wrap" 
+                                <TextBlock HorizontalAlignment="Right" TextWrapping="Wrap" 
                                        Foreground="WhiteSmoke"
                                        FontSize="16" 
-                                       Text="Результат: ">
+                                       Text="= ">
+                                <TextBlock HorizontalAlignment="Right" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="WhiteSmoke"
+                                           FontSize="16" 
+                                           Text="{Binding Path=Result}">
                                 </TextBlock>
-                                <TextBlock TextWrapping="Wrap" 
-                                       Foreground="WhiteSmoke"
-                                       FontSize="16" 
-                                       Text="{Binding Path=Result}">
-                                </TextBlock>
-
+                          </TextBlock>
                             </DockPanel>
                         </StackPanel>
                     </DataTemplate>
