@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="TreeCalc.Gadgets.Jurnal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TreeCalc.Gadgets"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition MaxHeight="40" />
+        </Grid.RowDefinitions>
+        <ScrollViewer  
+            MaxHeight="300"
+            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Disabled">
+            <ListBox Grid.Row="0" 
+                     MouseRightButtonUp="JurnalList_MouseRightButtonUp"
+                     MouseLeftButtonUp="JurnalList_MouseLeftButtonUp"
+                     Background="Transparent" 
+                     x:Name="jurnalList" 
+                     HorizontalContentAlignment="Stretch">
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <ItemsPresenter></ItemsPresenter>
+                        </DockPanel>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock TextWrapping="Wrap" Foreground="WhiteSmoke" FontSize="16" Text="Выражение:" HorizontalAlignment="Right"></TextBlock>
+                            <TextBlock TextWrapping="Wrap" Foreground="WhiteSmoke" FontSize="16" Text="{Binding Path=Expression}" HorizontalAlignment="Right"/>
+                            <DockPanel>
+                                <TextBlock TextWrapping="Wrap" 
+                                       Foreground="WhiteSmoke"
+                                       FontSize="16" 
+                                       Text="Результат: ">
+                                </TextBlock>
+                                <TextBlock TextWrapping="Wrap" 
+                                       Foreground="WhiteSmoke"
+                                       FontSize="16" 
+                                       Text="{Binding Path=Result}">
+                                </TextBlock>
+
+                            </DockPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
+    

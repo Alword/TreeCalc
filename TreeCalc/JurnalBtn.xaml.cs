@@ -20,7 +20,7 @@ namespace TreeCalc
     /// </summary>
     public partial class JurnalBtn : UserControl
     {
-        public string SetHead
+        public string Header
         {
             get
             {
@@ -40,15 +40,20 @@ namespace TreeCalc
             }
             set
             {
-                lineLablel.Height = value ? 3 : 0; 
+                lineLablel.Height = value ? 3 : 0;
+                if (onActivation != null && value)
+                    onActivation.Invoke();
             }
         }
 
         public Action onActivation;
 
-        public JurnalBtn()
+        public JurnalBtn(string header, Action onAct)
         {
             InitializeComponent();
+            Header = header;
+            IsActivated = false;
+            onActivation = onAct;
         }
 
         private void UserControl_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -65,8 +70,6 @@ namespace TreeCalc
                     }
                 }
             }
-            if(onActivation != null)
-                onActivation.Invoke();
         }
     }
 }

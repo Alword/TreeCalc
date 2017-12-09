@@ -93,6 +93,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
     </Window.Resources>
     <Border BorderBrush="#2a89d7" BorderThickness="1" CornerRadius="0" >
         <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -119,16 +120,26 @@
                             <DockPanel Height="45" >
                                 <Label Content="≣ Инженерный" Foreground="WhiteSmoke" FontSize="22"></Label>
                             </DockPanel>
-                            <Label x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalContentAlignment="Right" Content=""/>
+                            <TextBlock x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalAlignment="Right" Text=""/>
                             <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
                         </StackPanel>
 
                         <DockPanel Height="41">
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MC"/>
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MR"/>
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M-"/>
-                            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="MS"/>
+                            <Label VerticalAlignment="Bottom" 
+                                   Style="{StaticResource topBTN}" 
+                                   Content="MC" MouseUp="MemoryHandle"/>
+                            <Label VerticalAlignment="Bottom"
+                                   Style="{StaticResource topBTN}" 
+                                   Content="MR" MouseUp="MemoryHandle"/>
+                            <Label VerticalAlignment="Bottom" 
+                                   Style="{StaticResource topBTN}" 
+                                   Content="M+" MouseUp="MemoryHandle"/>
+                            <Label VerticalAlignment="Bottom" 
+                                   Style="{StaticResource topBTN}" 
+                                   Content="M-" MouseUp="MemoryHandle"/>
+                            <Label VerticalAlignment="Bottom" 
+                                   Style="{StaticResource topBTN}" 
+                                   Content="MS" MouseUp="MemoryHandle"/>
                         </DockPanel>
                         <Grid Margin="4" x:Name="GridField" VerticalAlignment="Stretch" Height="293">
                             <Grid.ColumnDefinitions>
@@ -240,13 +251,14 @@
                                    MouseUp="Breaketing_MouseUp"/>
                             <Label Grid.Row="6" Grid.Column="1"
                                    Style="{StaticResource opBTN}" 
-                                   Content="±" />
+                                   Content="±"
+                                   MouseUp="Label_MouseUp_1"/>
                             <Label Grid.Row="6" Grid.Column="2" 
                                    Style="{StaticResource NumBTN}" 
                                    Content="0" DataContext="0" />
                             <Label Grid.Row="6" Grid.Column="3" 
                                    Style="{StaticResource NumBTN}" 
-                                   Content="," DataContext="."/>
+                                   Content="," MouseUp="Label_MouseUp_2"/>
                             <Label Grid.Row="6" Grid.Column="4"
                                    Style="{StaticResource opBTN}" 
                                    Content="=" MouseUp="EqualsMouseUp"/>
@@ -254,12 +266,15 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Column="1">
-                    <StackPanel  HorizontalAlignment="Stretch" >
-                        <DockPanel>
-                            <local:JurnalBtn x:Name="jurnalBTN" />
-                            <local:JurnalBtn x:Name="meoryBTN"/>
-                        </DockPanel>
-                    </StackPanel>
+                    <Grid  HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <DockPanel x:Name="BTNDockPanel" Grid.Row="0" />
+                        <Grid Grid.Row="1" x:Name="GadgetGrid" 
+                              VerticalAlignment="Stretch"/>
+                    </Grid>
                 </Grid>
             </Grid>
         </StackPanel>

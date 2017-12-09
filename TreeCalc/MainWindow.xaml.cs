@@ -21,21 +21,75 @@ namespace TreeCalc
     /// </summary>
     public partial class MainWindow : Window
     {
-        //string calcData.Content;
+        Gadgets.Jurnal jurnal = null;
+        Gadgets.Memory memory = null;
+
         public MainWindow()
         {
-            void warmingUp()
-            {
-                Operation.TryCalc("0");
-            }
-            new System.Threading.Thread(warmingUp).Start();
+            new System.Threading.Thread(() => Operation.TryCalc("0")).Start();
+
+            jurnal = new Gadgets.Jurnal(JurnalLeftBtn, JurnalRightBtn);
+
+            memory = new Gadgets.Memory(this);
+
             InitializeComponent();
 
-            jurnalBTN.SetHead = "Журнал";
-            jurnalBTN.IsActivated = true;
+            BTNDockPanel.Children.Add(new JurnalBtn("Журнал", OnJurnalSelected));
 
-            meoryBTN.SetHead = "Память";
-            meoryBTN.IsActivated = false;
+            BTNDockPanel.Children.Add(new JurnalBtn("Память", OnMemSelected));
+
+            (BTNDockPanel.Children[0] as JurnalBtn).IsActivated = true;
+
+        }
+
+        public string Query
+        {
+            get => calcData.Text;
+            set
+            {
+                calcData.Text = value.Replace(",", ".");
+                FastDetermine();
+            }
+        }
+
+        public string Result
+        {
+            get => resultData.Content.ToString();
+            set
+            {
+                resultData.Content = value;
+            }
+        }
+
+        private bool FastDetermine()
+        {
+            string res = resultData.Content.ToString();
+            bool didDetermine = Model.TryDetermine(Query, ref res);
+            resultData.Content = didDetermine ? res : resultData.Content;
+            return didDetermine;
+        }
+
+        private void OnJurnalSelected()
+        {
+            GadgetGrid.Children.Clear();
+            GadgetGrid.Children.Add(jurnal);
+        }
+
+        private void OnMemSelected()
+        {
+            GadgetGrid.Children.Clear();
+            GadgetGrid.Children.Add(memory);
+        }
+
+        private void JurnalRightBtn(string result)
+        {
+            if (Model.ItCanBe(Query, result[0]) && Model.IsOneDot(Query, result))
+                Query += result;
+        }
+
+        private void JurnalLeftBtn(string query)
+        {
+            Query = query;
         }
 
         /// <summary>
@@ -68,89 +122,53 @@ namespace TreeCalc
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Нажата другая кнопка или цифра
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpBtn_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is Label)
             {
                 var hwnd = sender as Label;
-                bool itPossible = false;
-
                 if (hwnd.DataContext != null)
                 {
-                    string source = calcData.Content.ToString();
-                    char context = hwnd.DataContext.ToString()[0];
-
-                    if (source.Length == 0)
-                    {
-                        if ((context == '-' || char.IsLetterOrDigit(context)))
-                        {
-                            itPossible = true;
-                        }
-                    }
-                    else
-                    {
-                        char last = source[source.Length - 1];
-
-                        //Если последний - ( => {-} или {a} или {num}
-                        //Если последний - {*x+-/} => {a} или num
-                        //Если последний - {num} => ({num} или {*x+-/}) не буква
-                        if (char.IsNumber(last) && !char.IsLetter(context))
-                        {
-                            itPossible = true;
-                        }
-                        else if (!char.IsLetterOrDigit(last))
-                        {
-                            if (last == '(' && (context == '-' || char.IsLetterOrDigit(context)))
-                            {
-                                itPossible = true;
-                            }
-                            else
-                            if (last == ')' && (!char.IsLetterOrDigit(context)))
-                            {
-                                itPossible = true;
-                            }
-                            else
-                            if (last != ')' && last != '(' && char.IsLetterOrDigit(context))
-                            {
-                                itPossible = true;
-                            }
-                        }
-                        else if (char.IsDigit(last) && !char.IsLetter(context))
-                        {
-                            itPossible = true;
-                        }
-
-                    }
-                    if (itPossible)
-                        AddOperation(hwnd.DataContext.ToString());
-
+                    if (Model.ItCanBe(Query, hwnd.DataContext.ToString()[0]))
+                        Query += hwnd.DataContext.ToString();
                 }//(hwnd.DataContext != null)
-            }//(sender is Label)
+            }//(sender is Label
+        }
 
-            void AddOperation(string operation)
-            {
-                calcData.Content += operation;
-            }
-        }//OpBtn_Click(
-
+        /// <summary>
+        /// Нажата кнопка равно
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EqualsMouseUp(object sender, MouseButtonEventArgs e)
         {
-            string source = calcData.Content.ToString();
-            if (Model.BraketsDiff(source) == 0)
+            if (FastDetermine())
             {
-                resultData.Content = Model.Equals(source);
+                jurnal.AddNote(Query, Result);
+                Query = Result;
             }
         }
 
+        /// <summary>
+        /// Нажата кнопка C
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Backspace_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Label)
-            {
-                var hwdl = calcData;
-                hwdl.Content = Model.Backspace(hwdl.Content.ToString());
-            }
+            Query = Model.Backspace(Query);
         }
 
+        /// <summary>
+        /// Нажата кнопка шифт
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShiftMouseUp(object sender, MouseButtonEventArgs e)
         {
             var hwnd = (sender as Label);
@@ -187,9 +205,14 @@ namespace TreeCalc
             } while (j < 6);
         }
 
+        /// <summary>
+        /// Нажата кнопка скобки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Breaketing_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            string source = (string)calcData.Content.ToString();
+            string source = Query;
 
             int dif = Model.BraketsDiff(source);
 
@@ -197,18 +220,86 @@ namespace TreeCalc
             {
                 if (dif > 0)
                 {
-                    calcData.Content += ")";
+                    Query += ")";
                 }
             }
             else
             {
-                calcData.Content += "(";
+                Query += "(";
             }
         }
 
+        /// <summary>
+        /// Нажата кнопка очистки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Label_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            calcData.Content = "";
+            Query = "";
+            Result = "";
+        }
+
+        /// <summary>
+        /// Нажата кнопка смены знака
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Label_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            if (decimal.TryParse(Result, out decimal result))
+            {
+                Result = (result * -1).ToString();
+            }
+        }
+
+        /// <summary>
+        /// Нажата кнопка точка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Label_MouseUp_2(object sender, MouseButtonEventArgs e)
+        {
+            if (Model.IsDotCanBeAdded(Query))
+                Query += ".";
+        }
+
+        private void MemoryHandle(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Label)
+            {
+                var hwnd = sender as Label;
+                {
+                    try
+                    {
+                        if (hwnd.Content.ToString() == "MC")
+                        {
+                            memory.MS = 0;
+                        }
+                        else if (hwnd.Content.ToString() == "MR")
+                        {
+                            if (Model.ItCanBe(Query, memory.MS.ToString()[0]) && Model.IsOneDot(Query, memory.MS.ToString()))
+                                Query += memory.MS.ToString();
+                        }
+                        else if (hwnd.Content.ToString() == "M+")
+                        {
+                            memory.MS += Convert.ToDecimal(Result);
+                        }
+                        else if (hwnd.Content.ToString() == "M-")
+                        {
+                            memory.MS -= Convert.ToDecimal(Result);
+                        }
+                        else if (hwnd.Content.ToString() == "MS")
+                        {
+                            memory.MS = Convert.ToDecimal(Result);
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
         }
     }
 
@@ -251,7 +342,6 @@ namespace TreeCalc
                 "atan("
             };
 
-
         public static string Backspace(string calcData)
         {
             if (calcData.Length > 0)
@@ -267,9 +357,83 @@ namespace TreeCalc
             return calcData;
         }
 
-        public static string Equals(string data)
+        public static bool TryDetermine(string Query, ref string result)
         {
-            return Operation.TryCalc(data);
+            bool canDetermine = (BraketsDiff(Query) == 0 && (char.IsNumber(Query.Last()) || Query.Last() == ')'));
+            if (canDetermine)
+            {
+                result = Model.GetAnswer(Query);
+            }
+            return canDetermine;
+        }
+
+        public static bool ItCanBe(string source, char context)
+        {
+            bool itPossible = false;
+            if (source.Length == 0)
+            {
+                if ((context == '-' || char.IsLetterOrDigit(context)))
+                {
+                    itPossible = true;
+                }
+            }
+            else
+            {
+                char last = source[source.Length - 1];
+
+                //Если последний - ( => {-} или {a} или {num}
+                //Если последний - {*x+-/} => {a} или num
+                //Если последний - {num} => ({num} или {*x+-/}) не буква
+                if (char.IsNumber(last) && !char.IsLetter(context))
+                {
+                    itPossible = true;
+                }
+                else if (!char.IsLetterOrDigit(last))
+                {
+                    if (last == '(' && (context == '-' || char.IsLetterOrDigit(context)))
+                    {
+                        itPossible = true;
+                    }
+                    else
+                    if (last == ')' && (!char.IsLetterOrDigit(context)))
+                    {
+                        itPossible = true;
+                    }
+                    else
+                    if (last != ')' && last != '(' && char.IsLetterOrDigit(context))
+                    {
+                        itPossible = true;
+                    }
+                }
+                else if (char.IsDigit(last) && !char.IsLetter(context))
+                {
+                    itPossible = true;
+                }
+
+            }
+            return itPossible;
+        }
+
+        public static bool IsOneDot(string source, string result)
+        {
+            bool isPosible = true;
+            if (char.IsNumber(source.Last()) || '.' == source.Last())
+            {
+                isPosible = (IsDotCanBeAdded(source) || result.IndexOf(',') < 0);
+            }
+            return isPosible;
+        }
+
+        public static bool IsDotCanBeAdded(string query)
+        {
+            int numLen = 0;
+            int i = query.Length - 1;
+            while (i > -1 && char.IsNumber(query[i]))
+            {
+                numLen++;
+                i--;
+            }
+            return (numLen > 0 && ((i > -1 && query[i] != '.') || (i < 0)));
         }
 
         private static string ChangeZnak(string calcData)
@@ -281,5 +445,18 @@ namespace TreeCalc
         {
             return new Regex(@"\(").Matches(source).Count - new Regex(@"\)").Matches(source).Count;
         }
+
+        private static string GetAnswer(string data)
+        {
+            return Operation.TryCalc(data);
+        }
+
+    }
+}
+public static class Extensions
+{
+    public static char Last(this string str)
+    {
+        return (str.Length == 0) ? '\n' : str[str.Length - 1];
     }
 }

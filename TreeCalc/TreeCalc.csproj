@@ -63,6 +63,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Gadgets\Jurnal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Gadgets\Memory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="JurnalBtn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -74,6 +82,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gadgets\Jurnal.xaml.cs">
+      <DependentUpon>Jurnal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Gadgets\Memory.xaml.cs">
+      <DependentUpon>Memory.xaml</DependentUpon>
     </Compile>
     <Compile Include="JurnalBtn.xaml.cs">
       <DependentUpon>JurnalBtn.xaml</DependentUpon>
