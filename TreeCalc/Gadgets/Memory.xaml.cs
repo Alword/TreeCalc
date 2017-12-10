@@ -20,23 +20,29 @@ namespace TreeCalc.Gadgets
     /// </summary>
     public partial class Memory : UserControl
     {
-        private decimal ms = 0;
-        public decimal MS
+
+        public string MS
         {
-            get => ms;
+            get => memBlock.Text;
             set
             {
-                ms = value;
-                memBlock.Text = ms.ToString();
+                memBlock.Text = value;
             }
         }
+
         MainWindow jManager = null;
+
         public Memory(MainWindow jmanager)
         {
             InitializeComponent();
             jManager = jmanager;
         }
 
+        /// <summary>
+        /// Нажата одна из кнопок
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpBtn_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is Label)
@@ -44,15 +50,15 @@ namespace TreeCalc.Gadgets
                 var hwnd = sender as Label;
                 if (hwnd.Content.ToString() == "MC")
                 {
-                    MS = 0;
+                    MS = Operation.TryCalc($"0");
                 }
                 else if (hwnd.Content.ToString() == "M+")
                 {
-                    MS += Convert.ToDecimal(jManager.Result);
+                    MS = Operation.TryCalc($"({MS})+({jManager.Result})");
                 }
                 else if (hwnd.Content.ToString() == "M-")
                 {
-                    MS -= Convert.ToDecimal(jManager.Result);
+                    MS = Operation.TryCalc($"({MS})-({jManager.Result})");
                 }
             }
         }

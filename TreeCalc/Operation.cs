@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TreeCalc
 {
@@ -12,26 +15,6 @@ namespace TreeCalc
         [DllImport(@"ExpressionCalculator.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern double Calculate(string inputExpression);
 
-        public enum Operations
-        {
-            asin,
-            acos,
-            atan,
-            log,
-            power,
-            sin,
-            cos,
-            tan,
-            exp,
-            addition,
-            subtraction,
-            multiplication,
-            division,
-            leftBracket,
-            rightBracket,
-            factorial,
-        }
-
         /// <summary>
         /// Посчитать выражение
         /// </summary>
@@ -39,8 +22,19 @@ namespace TreeCalc
         /// <returns>Результат выражения</returns>
         public static string TryCalc(string x)
         {
-            string res = Calculate(x).ToString();
-            return res;
+            string result = "";
+            try
+            {
+                if (x.CountWords("∞") == 0)
+                {
+                    result = Calculate(x).ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+            }
+            return result;
         }
     }
 }

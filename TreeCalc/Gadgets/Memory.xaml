@@ -61,13 +61,21 @@
         </Style>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock x:Name="memBlock" Foreground="WhiteSmoke"  Margin="10" FontSize="32" HorizontalAlignment="Right"></TextBlock>
-        <DockPanel Height="41" HorizontalAlignment="Right" >
+        <TextBlock x:Name="memBlock" 
+                   Foreground="WhiteSmoke"  
+                   Margin="10" FontSize="32" 
+                   HorizontalAlignment="Right"/>
+        <DockPanel Height="41" 
+                   HorizontalAlignment="Right" >
             <Label VerticalAlignment="Bottom" 
                    Style="{StaticResource topBTN}" 
                    Content="MC"/>
-            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M+"/>
-            <Label VerticalAlignment="Bottom" Style="{StaticResource topBTN}" Content="M-" MouseUp="OpBtn_Click"/>
+            <Label VerticalAlignment="Bottom" 
+                   Style="{StaticResource topBTN}" 
+                   Content="M+"/>
+            <Label VerticalAlignment="Bottom" 
+                   Style="{StaticResource topBTN}" 
+                   Content="M-"/>
         </DockPanel>
     </StackPanel>
 </UserControl>

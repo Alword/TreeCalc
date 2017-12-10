@@ -8,7 +8,7 @@
         Title="Калькулятор"
         Background="#1f1f1f"
         FontSize="12"
-        Height="504" Width="896" Visibility="Visible" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF096AF5">
+        Height="504" Width="896" Visibility="Visible" ResizeMode="NoResize" WindowStyle="None" BorderBrush="#FF096AF5" PreviewKeyUp="Window_PreviewKeyUp">
     <Window.Resources>
         <Style x:Key="NumBTN">
             <Style.Setters>
@@ -120,8 +120,8 @@
                             <DockPanel Height="45" >
                                 <Label Content="≣ Инженерный" Foreground="WhiteSmoke" FontSize="22"></Label>
                             </DockPanel>
-                            <TextBlock x:Name="calcData" Foreground="AliceBlue" FontSize="16" HorizontalAlignment="Right" Text=""/>
-                            <Label x:Name="resultData" Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
+                            <TextBlock x:Name="calcData" Foreground="AliceBlue" MouseUp="CalcData_MouseUp" Cursor="Hand" FontSize="16" HorizontalAlignment="Right" Text=""/>
+                            <Label x:Name="resultData" Cursor="Hand" PreviewMouseUp="ResultData_PreviewMouseUp"  Margin="0 -11 0 0" Foreground="AliceBlue" FontSize="46" HorizontalContentAlignment="Right" Content="0"/>
                         </StackPanel>
 
                         <DockPanel Height="41">
@@ -169,8 +169,9 @@
                                    Content="tan" DataContext="tan("/>
                             <Label Grid.Row="0" Grid.Column="3"
                                    Style="{StaticResource opBTN}" 
-                                   Content="Exp" DataContext="exp("/>
-                            <Label Grid.Row="0" Grid.Column="4"
+                                   Content="exp" DataContext="exp("/>
+                            <Label x:Name="ShiftBtn"
+                                Grid.Row="0" Grid.Column="4"
                                    Style="{StaticResource opBTN}" 
                                    Content="↑" MouseUp="ShiftMouseUp"/>
                             <Label Grid.Row="1" Grid.Column="0" 
@@ -187,7 +188,7 @@
                                    Content="log"  DataContext="log("/>
                             <Label Grid.Row="1" Grid.Column="3" 
                                    Style="{StaticResource opBTN}" 
-                                   Content="Ln" DataContext="ln("/>
+                                   Content="ln" DataContext="ln("/>
                             <Label Grid.Row="2" Grid.Column="0"
                                    Style="{StaticResource opBTN}" 
                                    Content="∛" DataContext="cbrt("/>
@@ -219,7 +220,7 @@
                                    Content="—" DataContext="-"/>
                             <Label Grid.Row="4" Grid.Column="0" 
                                    Style="{StaticResource opBTN}" 
-                                   Content="π" DataContext="3.14"/>
+                                   Content="π" DataContext="3.14159265358979323846"/>
                             <Label Grid.Row="4" Grid.Column="1" 
                                    Style="{StaticResource NumBTN}" 
                                    Content="4" DataContext="4"/>
@@ -234,7 +235,7 @@
                                    Content="✕" DataContext="*"/>
                             <Label Grid.Row="5" Grid.Column="0" 
                                    Style="{StaticResource opBTN}"  
-                                   Content="n!" DataContext="fact("/>
+                                   Content="fact(" DataContext="fact("/>
                             <Label Grid.Row="5" Grid.Column="1" 
                                    Style="{StaticResource NumBTN}" 
                                    Content="1" DataContext="1"/>
@@ -252,13 +253,13 @@
                             <Label Grid.Row="6" Grid.Column="1"
                                    Style="{StaticResource opBTN}" 
                                    Content="±"
-                                   MouseUp="Label_MouseUp_1"/>
+                                   MouseUp="ChangeZnackMouseUp"/>
                             <Label Grid.Row="6" Grid.Column="2" 
                                    Style="{StaticResource NumBTN}" 
                                    Content="0" DataContext="0" />
                             <Label Grid.Row="6" Grid.Column="3" 
                                    Style="{StaticResource NumBTN}" 
-                                   Content="," MouseUp="Label_MouseUp_2"/>
+                                   Content="," DataContext="."/>
                             <Label Grid.Row="6" Grid.Column="4"
                                    Style="{StaticResource opBTN}" 
                                    Content="=" MouseUp="EqualsMouseUp"/>

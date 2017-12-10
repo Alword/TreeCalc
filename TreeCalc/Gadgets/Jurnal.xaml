@@ -9,7 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition MaxHeight="40" />
+            <RowDefinition MaxHeight="50" />
         </Grid.RowDefinitions>
         <ScrollViewer  
             MaxHeight="300"
@@ -50,6 +50,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </ScrollViewer>
+        <DockPanel Grid.Row="1" Margin="0 0 10 10">
+            <Image Width="40" HorizontalAlignment="Right" Source="img/delete.png" Cursor="Hand" MouseUp="Image_MouseUp" ></Image>
+        </DockPanel>
     </Grid>
 </UserControl>
     
